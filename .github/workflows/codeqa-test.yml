@@ -58,7 +58,7 @@ jobs:
       run: coverage run -m pytest
     - env:
         COVERALLS_PARALLEL: true
-        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_REPO_TOKEN: ${{ secrets.coveralls_repo_token }}
       name: Submit to coveralls
       run: coveralls
 
