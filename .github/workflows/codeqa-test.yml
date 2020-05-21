@@ -53,22 +53,21 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      run: pip install .[test,curio,trio]
+      run: pip install .[test,curio,trio] coverage coveralls
     - name: Test with pytest
       run: coverage run -m pytest
-    - name: Coveralls Parallel
-      uses: AndreMiras/coveralls-python-action@develop
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        flag-name: run-${{ matrix.test_number }}
-        parallel: true
+    - env:
+        COVERALLS_PARALLEL: true
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      name: Submit to coveralls
+      run: coveralls
 
   coveralls:
     runs-on: ubuntu-latest
     needs: test
     steps:
     - name: Tell Coveralls that the parallel build is finished
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
